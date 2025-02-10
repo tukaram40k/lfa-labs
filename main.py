@@ -19,7 +19,7 @@ class Grammar:
         self.vt = vt
         self.p = p
 
-    def generate_string(self):
+    def generate_string(self, print_steps=False):
         string = ['S']
 
         while any(letter in self.vn for letter in string):
@@ -36,10 +36,23 @@ class Grammar:
                     for item in replacement:
                         string.insert(letter_index, item)
                         letter_index += 1
-                steps += 1
-                print(f"Step {steps}: {initial_step} → {''.join(string)}")
 
-            print(f"Final word: {''.join(string)}")
+                steps += 1
+                if print_steps:
+                    print(f"Step {steps}: {initial_step} → {''.join(string)}")
+
+            if print_steps:
+                print(f"Final word: {''.join(string)}")
+
+            return ''.join(string)
+
+    def get_n_strings(self, n):
+        words = []
+        while len(words) < n:
+            word = self.generate_string()
+            if word not in words:
+                words.append(word)
+        return words
 
 
 # main
@@ -53,4 +66,4 @@ P = {
 }
 
 g1 = Grammar(vn, vt, P)
-g1.generate_string()
+print(g1.get_n_strings(5))
