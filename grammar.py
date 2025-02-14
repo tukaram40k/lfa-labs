@@ -1,4 +1,5 @@
 import random as r
+from finite_automaton import FiniteAutomaton
 
 class Grammar:
     def __init__(self, vn, vt, p):
@@ -6,6 +7,7 @@ class Grammar:
         self.vt = vt
         self.p = p
 
+    # this generates a random string according to the rules
     def generate_string(self, print_steps=False):
         string = ['S']
 
@@ -25,18 +27,21 @@ class Grammar:
                         letter_index += 1
 
                 steps += 1
-                if print_steps:
-                    print(f"Step {steps}: {initial_step} → {''.join(string)}")
+                if print_steps: print(f"Step {steps}: {initial_step} → {''.join(string)}")
 
-            if print_steps:
-                print(f"Final word: {''.join(string)}")
+            if print_steps: print(f"Final word: {''.join(string)}")
 
             return ''.join(string)
 
+    # this returns n unique strings
     def get_n_strings(self, n):
         words = []
         while len(words) < n:
             word = self.generate_string()
-            if word not in words:
-                words.append(word)
+            if word not in words: words.append(word)
+
         return words
+
+    def to_finite_automaton(self):
+        a = FiniteAutomaton()
+        return a

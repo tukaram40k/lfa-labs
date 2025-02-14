@@ -23,4 +23,4 @@ p = {
 }
 
 g1 = Grammar(vn, vt, p)
-print(g1.get_n_strings(5))
+print(g1.get_n_strings(10))
