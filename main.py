@@ -1,4 +1,5 @@
 from grammar import Grammar
+from finite_automaton import FiniteAutomaton
 
 # Variant 25:
 # VN={S, A, B},
@@ -23,4 +24,8 @@ p = {
 }
 
 g1 = Grammar(vn, vt, p)
-print(g1.get_n_strings(10))
+# print(g1.get_n_strings(10))
+
+a1 = FiniteAutomaton(g1.vn, g1.vt, g1.p)
+a1.map_transitions()
+a1.print_transitions()
