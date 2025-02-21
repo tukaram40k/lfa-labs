@@ -12,7 +12,7 @@ class FiniteAutomaton:
 
         for vn, rules in p.items():
             for rule in rules:
-                if len(rule) == 1 and rule in vt:  # terminal leads to final state
+                if len(rule) == 1 and rule in vt:  # terminal char -> final state
                     trans[(vn, rule)] = 'final'
                 elif len(rule) >= 2:
                     symbol = rule[0]

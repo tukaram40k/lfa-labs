@@ -1,5 +1,4 @@
 import random as r
-from finite_automaton import FiniteAutomaton
 
 class Grammar:
     def __init__(self, vn, vt, p):
@@ -41,7 +40,3 @@ class Grammar:
             if word not in words: words.append(word)
 
         return words
-
-    def to_finite_automaton(self):
-        a = FiniteAutomaton()
-        return a

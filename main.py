@@ -25,6 +25,7 @@ p = {
 
 g1 = Grammar(vn, vt, p)
 a1 = FiniteAutomaton(g1.vt, g1.p)
+a1.print_transitions()
 
 for str in g1.get_n_strings(100):
     if not a1.str_belongs_to_lang(str): print(str)
