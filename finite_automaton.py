@@ -1,9 +1,8 @@
 class FiniteAutomaton:
-    def __init__(self, vn, vt, p):
-        self.Q = vn # мб это не нужно
+    def __init__(self, vt, p):
         self.vt = vt
         self.p = p
-        self.transitions = self.map_transitions()
+        self.trans = self.map_transitions()
 
     def map_transitions(self):
         vt = self.vt
@@ -14,7 +13,7 @@ class FiniteAutomaton:
         for vn, rules in p.items():
             for rule in rules:
                 if len(rule) == 1 and rule in vt:  # terminal leads to final state
-                    trans[(vn, rule)] = 'FINAL'
+                    trans[(vn, rule)] = 'final'
                 elif len(rule) >= 2:
                     symbol = rule[0]
                     next = rule[1]
@@ -23,7 +22,12 @@ class FiniteAutomaton:
         return trans
 
     def print_transitions(self):
-        print(self.transitions)
+        print(self.trans)
 
     def str_belongs_to_lang(self, str):
-        pass
+        q = 'S'
+        for s in str:
+            if (q, s) not in self.trans:
+                return False
+            q = self.trans[(q, s)]
+        return q == 'final'
