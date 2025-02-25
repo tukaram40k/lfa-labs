@@ -5,6 +5,14 @@
 
 ----
 
+## Theory:
+Regular grammars are formal systems used to describe regular languages, which can be recognized by finite automata.
+They consist of production rules that generate strings following a specific pattern, typically defined by regular expressions.
+They are like step-by-step instructions for building words that follow specific patterns. These patterns can be checked using finite automata, which are like tiny decision-making machines with a limited number of states.
+Finite automata are abstract machines with a finite number of states used to process strings and determine whether they belong to a given regular language.
+There are two types of finite automata: deterministic, where each input leads to a unique state, and nondeterministic, where multiple transitions can exist for the same input.
+Regular grammars and finite automata are equivalent in expressive power, meaning any language described by a regular grammar can be accepted by a finite automaton and vice versa.
+
 ## Objectives:
 
 - According to variant, implement a type/class for your grammar;
@@ -17,8 +25,8 @@
 
 ## Implementation description
 
-* To store the grammar rules of my variant, I added two lists to store terminal and non-terminal symbols.
-* Derivation rules are stored as a dict with non-terminal symbols as keys and lists of products as values.
+To store the grammar rules of my variant, I added two lists to store terminal and non-terminal symbols.
+Derivation rules are stored as a dict with non-terminal symbols as keys and lists of products as values.
 
 ```py
 vn = ['S', 'A', 'B']
@@ -31,7 +39,7 @@ p = {
 }
 ```
 
-* In order to implement grammar, I've made a Grammar class. To instantiate it we need the set of terminal symbols, non-terminal symbols, and derivation rules.
+In order to implement grammar, I've made a Grammar class. To instantiate it we need the set of terminal symbols, non-terminal symbols, and derivation rules.
 
 ```py
 class Grammar:
@@ -41,40 +49,28 @@ class Grammar:
         self.p = p
 ```
 
-* The method below generates and returns a string according to derivation rules.
-* We start with string `'S'` and begin a loop replacing last character according to derivation rules.
-* The loop goes as long as there are non-terminal symbols present in the string.
-* Replacement occurs by selecting a random rule for the current character from the derivation dictionary.
+The method below generates and returns a string according to derivation rules.
+We start with string `'S'` and begin a loop replacing last character according to derivation rules.
+The loop goes as long as there are non-terminal symbols present in the string.
+Replacement occurs by selecting a random rule for the current character from the derivation dictionary.
 
 ```py
-def generate_string(self, print_steps=False):
-    string = ['S']
+for letter in string:
+    initial_step = f"{''.join(string)}"
+    if letter in self.vn:
+        # select any appropriate rule
+        replacement = list(random.choice(self.p[letter]))
+        letter_index = string.index(letter)
+        string.pop(letter_index)
 
-    while any(letter in self.vn for letter in string):
-        steps = 0
-        for letter in string:
-            initial_step = f"{''.join(string)}"
-            if letter in self.vn:
-                # select any appropriate rule
-                replacement = list(random.choice(self.p[letter]))
-                letter_index = string.index(letter)
-                string.pop(letter_index)
-
-                # derive replacement
-                for item in replacement:
-                    string.insert(letter_index, item)
-                    letter_index += 1
-
-            steps += 1
-            if print_steps: print(f"Step {steps}: {initial_step} → {''.join(string)}")
-
-        if print_steps: print(f"Final word: {''.join(string)}")
-
-        return ''.join(string)
+        # derive replacement
+        for item in replacement:
+            string.insert(letter_index, item)
+            letter_index += 1
 ```
 
-* The method below is a helper that returns `n` unique words from our language.
-* It calls the `generate_string` method until `n` unique strings are obtained.
+The method below is a helper that returns `n` unique words from our language.
+It calls the `generate_string` method until `n` unique strings are obtained.
 
 ```py
 def get_n_strings(self, n):
@@ -86,8 +82,8 @@ def get_n_strings(self, n):
     return words
 ```
 
-* In order to implement finite automaton, I've added a new class.
-* To instantiate it we need to pass the set of terminal symbols and the derivation rules.
+In order to implement finite automaton, I've added a new class.
+To instantiate it we need to pass the set of terminal symbols and the derivation rules.
 
 ```py
 class FiniteAutomaton:
@@ -97,9 +93,9 @@ class FiniteAutomaton:
         self.trans = self.map_transitions()
 ```
 
-* The `trans` parameter is a mapping of current state and input symbol to the next state.
-* It is stored as a dict of the following structure `{ (current_state, input_symbol) : next_state }`
-* This dict is generated from the derivation rules through `map_transitions` method shown below:
+The `trans` parameter is a mapping of current state and input symbol to the next state.
+It is stored as a dict of the following structure `{ (current_state, input_symbol) : next_state }`
+This dict is generated from the derivation rules through `map_transitions` method shown below:
 
 ```py
 def map_transitions(self):
@@ -119,10 +115,10 @@ def map_transitions(self):
     return trans
 ```
 
-* This method goes through each rule in the derivation rules dict.
-* Each non-terminal char is treated like a state.
-* Each `(Vn, rule)` pair expands into tuples of `(current_state, input_symbol)` and is mapped to the corresponding next state.
-* With this mapping, it's very easy to verify if an input string belongs to our language:
+This method goes through each rule in the derivation rules dict.
+Each non-terminal char is treated like a state.
+Each `(Vn, rule)` pair expands into tuples of `(current_state, input_symbol)` and is mapped to the corresponding next state.
+With this mapping, it's very easy to verify if an input string belongs to our language:
 
 ```py
 def str_belongs_to_lang(self, str):
@@ -134,10 +130,10 @@ def str_belongs_to_lang(self, str):
     return q == 'final'
 ```
 
-* We set the initial state as `'S'`, and for each char check if `(current_state, char)` tuple is present in the transition dict.
-* If it is, we take the corresponding state from our dict and update current state.
-* After going through all chars, we check current state, and if it's `'final'` the word is validated. Otherwise, reject the word.
-* To test how all this works, I wrote this snippet:
+We set the initial state as `'S'`, and for each char check if `(current_state, char)` tuple is present in the transition dict.
+If it is, we take the corresponding state from our dict and update current state.
+After going through all chars, we check current state, and if it's `'final'` the word is validated. Otherwise, reject the word.
+To test how all this works, I wrote this snippet:
 
 ```py
 from grammar import Grammar
@@ -159,8 +155,8 @@ for str in g1.get_n_strings(100):
     if not a1.str_belongs_to_lang(str): print(str)
 ```
 
-* It generates 100 valid words, and then verifies if they belong to our language.
-* If an invalid word is encountered, it will be printed out.
+It generates 100 valid words, and then verifies if they belong to our language.
+If an invalid word is encountered, it will be printed out.
 
 ## Conclusions / Screenshots / Results
 
@@ -174,6 +170,7 @@ Throughout the process of implementing the task, I've made a couple functions to
 ![img.png](images/img3.png)
 
 In conclusion, the task was implemented, but the functionality is still a bit bare-bones. Also, I assumed that derivation rules map a non-terminal symbol to a string of length at most 2 (eg. `S -> aB`). If the rules include longer strings (eg. `S -> abB`), the transition mapping function will not work, and the finite automaton will break.
+Expanding the implementation to handle longer derivation rules would make the solution more robust and applicable to a wider range of grammars. Additionally, further optimization of the transition mapping process could improve efficiency, especially for large grammars with numerous rules. Implementing error handling for invalid input strings and unexpected states would also enhance the overall reliability of the system. Future improvements could include visualizing the finite automaton’s state transitions to better understand the processing flow.
 
 ## References
 - [thank God Indians exist](https://www.youtube.com/watch?v=Qa6csfkK7_I)
