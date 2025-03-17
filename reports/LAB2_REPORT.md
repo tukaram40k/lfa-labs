@@ -47,8 +47,7 @@ To classify the grammar rules of my variant based on Chomsky hierarchy, I added 
 for lhs, rhs_list in self.p.items():
     for rhs in rhs_list:
         lhs_len = len(lhs)
-        rhs_len = len(rhs)
-           
+        rhs_len = len(rhs)      
 ```
 
 If any `lhs` is not in non-terminals, the grammar is Type 0 (unrestricted).
