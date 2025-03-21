@@ -12,7 +12,7 @@ class TokenType(Enum):
     engage = 'FOR THE EMPEROR!'
     lpar = 'IMPERIAL DECREE START'
     rpar = 'IMPERIAL DECREE END'
-    invalid = 'TRAITOR' # заюзать это где-нибудь
+    invalid = 'TRAITOR'
     
 class Token:
     def __init__(self, type, value, pos):
@@ -21,7 +21,8 @@ class Token:
         self.pos = pos
         
     def __str__(self):
-        return f'type: {self.type}, position: {self.pos}, value: {self.value}'
+        # return f"type: {self.type.value}, position: {self.pos}, value: {self.value}"
+        return f"type: {self.type.value:25} value: {self.value}"
         
 class Lexer:
     def __init__(self, src):
@@ -40,7 +41,7 @@ class Lexer:
             self.skip()
         val = self.src[start:self.pos]
         self.skip()
-        return Token(str, val, start)
+        return Token(TokenType.str, val, start)
         
     # handle keywords
     def take_keyword(self):
@@ -50,7 +51,7 @@ class Lexer:
         val = self.src[start:self.pos]
         
         kws = {
-            "faithful":  TokenType.faction,
+            "faithful": TokenType.faction,
             "heretic": TokenType.faction,
             "deploy": TokenType.deploy,
             "engage": TokenType.engage,
@@ -58,8 +59,7 @@ class Lexer:
             "vox_transmit": TokenType.vox
         }
         
-        toktype = kws.get(val, TokenType.identifyer)
-        return Token(toktype, val, start)
+        return Token(kws.get(val, TokenType.identifyer), val, start)
     
     # handle nums
     def take_num(self):
@@ -67,20 +67,20 @@ class Lexer:
         while (self.pos < len(self.src) and self.src[self.pos].isdigit()):
             self.skip()
         val = self.src[start:self.pos]
-        return Token()
+        return Token(TokenType.num, val, start)
         
     # identify all tokens
     def tokenize(self):
         while(self.pos < len(self.src)):
             char = self.src[self.pos]
             
-            if char == ' ': self.skip()
+            if char.isspace(): self.skip()
             elif char.isdigit():
-                self.tokens.append(self.take_num)
+                self.tokens.append(self.take_num())
             elif char.isalnum():
-                self.tokens.append(self.take_keyword)
+                self.tokens.append(self.take_keyword())
             elif char == '"':
-                self.tokens.append(self.take_str)
+                self.tokens.append(self.take_str())
             elif char == '=':
                 self.tokens.append(Token(TokenType.equals, '=', self.pos))
                 self.skip()
@@ -92,7 +92,8 @@ class Lexer:
                 self.skip()
             else:
                 self.tokens.append(Token(TokenType.invalid, char, self.pos))
+                self.skip()
                 
     def print_tokens(self):
-        for token in self.tokens:
-            print(token)
+        for i, token in enumerate(self.tokens):
+            print(f"token {i+1:3}   {token}")

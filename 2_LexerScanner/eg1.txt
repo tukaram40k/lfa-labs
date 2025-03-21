@@ -1,5 +1,5 @@
 faithful "Roboute Guilliman" {
-    deploy space_marines = 50
+    deploy space_marines = 50,
     deploy chaplain = 1
     deploy dreadnaught = 5
     deploy landraider = 2
@@ -17,4 +17,7 @@ heretic "Abaddon the Despoiler" {
     chaos_sorcerer cast "Aura of Terror"
 }
 
-engage("Roboute Guilliman", "Abaddon the Despoiler")
+engage {
+    "Roboute Guilliman"
+    "Abaddon the Despoiler"
+}
