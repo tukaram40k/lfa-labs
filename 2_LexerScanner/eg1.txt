@@ -1,8 +1,7 @@
 faithful "Roboute Guilliman" {
-    deploy space_marines = 50,
+    deploy space_marines = 50
     deploy chaplain = 1
     deploy dreadnaught = 5
-    deploy landraider = 2
 
     chaplain cast "Demoralizing Shout"
 
@@ -10,7 +9,6 @@ faithful "Roboute Guilliman" {
 }
 
 heretic "Abaddon the Despoiler" {
-    deploy chaos_marines = 30
     deploy warp_horrors = 10
     deploy chaos_sorcerer = 1
 

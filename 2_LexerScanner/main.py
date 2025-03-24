@@ -1,9 +1,9 @@
 from lexer import Lexer
-from pathlib import Path
 
-dir = Path(__file__).parent # че за говно
+path = f'./2_LexerScanner/eg1.txt'
+# path = f'./2_LexerScanner/eg2.txt'
 
-with open(f'{dir}/eg1.txt', 'r') as file:
+with open(path, 'r') as file:
     text = file.read()
     
     l1 = Lexer(text)
