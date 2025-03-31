@@ -1,7 +1,7 @@
 from lexer import Lexer
 
-path = f'./2_LexerScanner/eg1.txt'
-# path = f'./2_LexerScanner/eg2.txt'
+path = f'./3_LexerScanner/eg1.txt'
+# path = f'./3_LexerScanner/eg2.txt'
 
 with open(path, 'r') as file:
     text = file.read()
