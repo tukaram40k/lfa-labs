@@ -8,9 +8,9 @@ class Reg:
     # split re into tokens
     def scan_re(self):
         self.reg = [re.split(' ', i) for i in self.src]
-        print(self.reg)
+        # print(self.reg)
     
-    def generate_str(self, n):
+    def get_str(self):
         strings = []
         
         # go through tokens
@@ -30,21 +30,21 @@ class Reg:
                 
                 if last.isalpha(): last = '1'
                 if ')' in chars and last.isdigit(): chars = chars[:-1]
-                if '(' not in chars and ')' not in chars: last = '1'
+                if '(' not in chars and ')' not in chars and last not in ['*', '+', '?']: last = '1'
                                
                 # check for |
                 chars = chars.replace('(', '')
                 chars = chars.replace(')', '')
                 chars = chars.split('|')
                 
-                print(f'token: {token:10} chars: {chars}, last: {last}')
+                # print(f'token: {token:10} chars: {chars}, last: {last}')
                 
                 if last.isdigit():
                     ch = r.choice(chars)
                     for _ in range(int(last)):
                         result.append(ch)
                 elif last == '?':
-                    for _ in range(r.randint(0, 1)):
+                    if r.randint(0, 1) == 1:
                         result.append(r.choice(chars))
                 elif last == '+':
                     ch = r.choice(chars)
@@ -60,9 +60,21 @@ class Reg:
             
             strings.append(str)
         
-        print(strings)
+        return strings
                 
+    def generate_str(self, n):
+        results = []
+        
+        while len(results) < n:
+            str = self.get_str()
+            if str not in results: results.append(str)
+            
+        for str in results:
+            str2 = []
+            for word in str:
+                str2.append(''.join(word))
+            print(str2)
     
 reg1 = Reg(['(a|b) (c|d) E+ G?', 'P (Q|R|S) T (UV|W|X)* Z+', '1 (0|1)* 2 (3|4)5 36'])
 reg1.scan_re()
-reg1.generate_str(1)
+reg1.generate_str(10)
