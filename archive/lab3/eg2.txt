@@ -1,3 +1,0 @@
-heretic "Fabius Bile" {
-    deploy plague_marines = 5 !!!
-}
