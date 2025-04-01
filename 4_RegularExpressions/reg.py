@@ -8,7 +8,6 @@ class Reg:
     # split re into tokens
     def scan_re(self):
         self.reg = [re.split(' ', i) for i in self.src]
-        # print(self.reg)
     
     def get_str(self):
         strings = []
@@ -65,6 +64,7 @@ class Reg:
     def generate_str(self, n):
         results = []
         
+        # generate n unique strings
         while len(results) < n:
             str = self.get_str()
             if str not in results: results.append(str)
@@ -75,6 +75,3 @@ class Reg:
                 str2.append(''.join(word))
             print(str2)
     
-reg1 = Reg(['(a|b) (c|d) E+ G?', 'P (Q|R|S) T (UV|W|X)* Z+', '1 (0|1)* 2 (3|4)5 36'])
-reg1.scan_re()
-reg1.generate_str(10)
