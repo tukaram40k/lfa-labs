@@ -14,3 +14,6 @@ p = {
 s = 'S'
 
 g1 = ToCNF(vn, vt, p, s)
+print(g1)
+g1.rm_st_symbol()
+print(g1)

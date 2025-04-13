@@ -17,8 +17,23 @@ class ToCNF:
         
         self.free_chars = new_chars
         
+    def next_free_ch(self):
+        ch = self.free_chars.pop(0)
+        return ch
+    
+    def __str__(self):
+        return f'vn = {self.vn}; vt = {self.vt}; s = {self.s}\np = {self.p}\n'
+        
+        
     def rm_st_symbol(self):
-        pass
+        for vn, rules in self.p.items():
+            for rule in rules:
+                if self.s in rule:
+                    new_s = self.next_free_ch()
+                    self.p[new_s] = [self.s]
+                    self.s = new_s
+                    self.vn.append(new_s)
+                    return
                     
     
     def rm_eprod(self):
