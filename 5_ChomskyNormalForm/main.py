@@ -14,7 +14,8 @@ p = {
 s = 'S'
 
 g1 = ToCNF(vn, vt, p, s)
-print(g1)
 g1.rm_st_symbol()
 g1.rm_eprod()
+print(g1)
+g1.rm_uprod()
 print(g1)

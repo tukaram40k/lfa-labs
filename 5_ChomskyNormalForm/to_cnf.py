@@ -78,7 +78,39 @@ class ToCNF:
                 self.p[self.s].append('epsilon')
     
     def rm_uprod(self):
-        pass
+        # find unit prods
+        unit_pairs = {vn: set() for vn in self.vn}
+
+        for A in self.vn:
+            for rule in self.p[A]:
+                if len(rule) == 1 and rule in self.vn:
+                    unit_pairs[A].add(rule)
+
+        changed = True
+        while changed:
+            changed = False
+            for A in self.vn:
+                new_units = set()
+                for B in unit_pairs[A]:
+                    for C in unit_pairs.get(B, []):
+                        if C not in unit_pairs[A]:
+                            new_units.add(C)
+                            changed = True
+                unit_pairs[A].update(new_units)
+
+        # add non-unit prods
+        new_p = {}
+        for A in self.vn:
+            new_rules = [rule for rule in self.p[A] if not (len(rule) == 1 and rule in self.vn)]
+            for B in unit_pairs[A]:
+                for rule in self.p[B]:
+                    if not (len(rule) == 1 and rule in self.vn):
+                        new_rules.append(rule)
+            new_p[A] = list(set(new_rules))  # remove dupes
+
+        self.p = new_p
+
+                
     
     def rm_extra_vars(self):
         pass
