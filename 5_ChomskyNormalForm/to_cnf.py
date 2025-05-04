@@ -176,36 +176,3 @@ class ToCNF:
             # Update the productions, removing duplicates
             self.p[A] = list(set(new_rules))
             
-    def rm_nonpr(self):
-        # Track where each non-terminal is used in productions
-        used_in = {vn: [] for vn in self.vn}
-        for A in self.p:
-            for rule in self.p[A]:
-                for symbol in rule:
-                    if symbol in self.vn:
-                        used_in[symbol].append((A, rule))
-
-        # Process non-terminals (excluding the start symbol)
-        processed = set()
-        for B in list(used_in.keys()):
-            if B == self.s or B in processed:
-                continue
-
-            # Check if B is used exactly once and its production is two non-terminals
-            if len(used_in[B]) == 1:
-                A, original_rule = used_in[B][0]
-                if len(self.p[B]) == 1 and len(self.p[B][0]) == 2 and all(s in self.vn for s in self.p[B][0]):
-                    replacement = self.p[B][0]
-                    new_rule = original_rule.replace(B, replacement)
-
-                    # Update the production rule in A
-                    self.p[A].remove(original_rule)
-                    self.p[A].append(new_rule)
-
-                    # Remove B from the grammar
-                    del self.p[B]
-                    self.vn.remove(B)
-                    processed.add(B)
-
-        # Re-process rules that may now have >2 symbols
-        self.rm_extra_vars()
