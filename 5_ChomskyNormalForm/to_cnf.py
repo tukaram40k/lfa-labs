@@ -117,6 +117,37 @@ class ToCNF:
 
         self.p = new_p
     
+    def rm_useless(self):
+        reachable = set()
+        reachable.add(self.s)
+        
+        to_process = [self.s]
+        
+        while to_process:
+            current = to_process.pop()
+            if current in self.p:
+                for rule in self.p[current]:
+                    for symbol in rule:
+                        if symbol in self.vn and symbol not in reachable:
+                            reachable.add(symbol)
+                            to_process.append(symbol)
+        
+        unreachable_vn = set(self.vn) - reachable
+        self.vn = [vn for vn in self.vn if vn not in unreachable_vn]
+        
+        for vn in unreachable_vn:
+            if vn in self.p:
+                del self.p[vn]
+        
+        used_terminals = set()
+        for rules in self.p.values():
+            for rule in rules:
+                for symbol in rule:
+                    if symbol in self.vt:
+                        used_terminals.add(symbol)
+        
+        self.vt = [vt for vt in self.vt if vt in used_terminals]
+    
     def rm_extra_vars(self):
         # Create a copy of the productions to avoid modification during iteration
         productions = list(self.p.items())
@@ -176,3 +207,15 @@ class ToCNF:
             # Update the productions, removing duplicates
             self.p[A] = list(set(new_rules))
             
+    def convert(self):
+        self.rm_st_symbol()
+        print("=========== removed starting symbol from production rules ===========\n", self)
+        self.rm_eprod()
+        print("=========== removed null productions ===========\n", self)
+        self.rm_uprod()
+        print("=========== removed unit productions ===========\n", self)
+        self.rm_useless()
+        print("=========== removed unreachable symbols ===========\n", self)
+        self.rm_extra_vars()
+        self.rm_extra_terms()
+        print("=========== turned remaining rules into cnf ===========\n", self)

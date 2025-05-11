@@ -13,10 +13,4 @@ p = {
 s = 'S'
 
 g1 = ToCNF(vn, vt, p, s)
-g1.rm_st_symbol()
-g1.rm_eprod()
-g1.rm_uprod()
-g1.rm_extra_vars()
-g1.rm_extra_terms()
-
-print(g1)
+g1.convert()
