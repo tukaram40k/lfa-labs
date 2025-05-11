@@ -27,7 +27,10 @@ class ToCNF:
         return ch
     
     def __str__(self):
-        return f'Vn = {self.vn}\n\nVt = {self.vt}\nS = {self.s}\n\nP = {self.p}\n'
+        p_str = ""
+        for key, value in self.p.items():
+            p_str += f"  {key} -> {value}\n"
+        return (f'Vn = {self.vn};\n\nVt = {self.vt};\n\nS = {self.s}\n\nP = \n{p_str}')
         
     def rm_st_symbol(self):
         for vn, rules in self.p.items():
