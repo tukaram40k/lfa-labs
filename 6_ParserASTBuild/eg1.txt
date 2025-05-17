@@ -1,0 +1,19 @@
+faithful "Roboute Guilliman" {
+    deploy space_marines = 50
+    deploy chaplain = 1
+    deploy dreadnaught = 5
+
+    chaplain cast "Demoralizing Shout"
+}
+
+heretic "Abaddon the Despoiler" {
+    deploy warp_horrors = 10
+    deploy chaos_warband = 1
+
+    chaos_warband vox_transmit "Blood for the Blood God!"
+}
+
+engage {
+    "Roboute Guilliman"
+    "Abaddon the Despoiler"
+}
