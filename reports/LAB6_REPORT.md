@@ -1,4 +1,4 @@
-# Lab 5 Report: Parser & Building an Abstract Syntax Tree
+# Lab 6 Report: Parser & Building an Abstract Syntax Tree
 
 ### Course: Formal Languages & Finite Automata
 ### Author: Ivan Rudenco
@@ -21,7 +21,7 @@ A parser is the second stage in the compilation process that follows lexical ana
 
 ## Implementation description
 
-Building upon the lexer from the previous lab, I implemented a parser and AST for the same Warhammer 40k-themed language. 
+Building upon the lexer from lab 3, I implemented a parser and an AST for the same Warhammer 40k themed language. 
 
 ### 1. AST nodes
 I defined several AST node classes to represent different language constructs:
